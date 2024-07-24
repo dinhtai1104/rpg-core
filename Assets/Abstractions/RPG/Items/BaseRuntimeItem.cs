@@ -26,5 +26,10 @@
         public BaseRuntimeItem() { }
         public BaseRuntimeItem(int id) { }
         public BaseRuntimeItem(string parseData) { }
+
+        public virtual void Drop()
+        {
+
+        }
     }
 }

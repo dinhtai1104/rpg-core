@@ -1,18 +1,20 @@
-﻿using System;
+﻿using Assets.Abstractions.RPG.Attributes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Assets.Abstractions.RPG.Attributes
+namespace Assets.Abstractions.RPG.Units.Engine.Attributes
 {
-    [Serializable]
-    public class AttributeGroup : IAttributeGroup
+    public class AttributeEngine : BaseMonoEngine, IAttributeGroup
     {
 #if UNITY_EDITOR
         [SerializeField] private List<AttributeInspectorData> _attributeDebugger;
 #endif
 
-        private readonly Dictionary<string, AttributeData> _attrDict;
+        private Dictionary<string, AttributeData> _attrDict;
 
         public int TotalStat => _attrDict.Count;
 
@@ -20,17 +22,12 @@ namespace Assets.Abstractions.RPG.Attributes
 
 #if UNITY_EDITOR || DEVELOPMENT || DEVELOPMENT_BUILD
         public Dictionary<string, AttributeData> AttributesDirectDict => _attrDict;
-
-        public bool IsInitialized => true;
-
-        public bool Locked { set; get; }
 #endif
-
-        public AttributeGroup()
+        public override void Initialize()
         {
+            base.Initialize();
             _attrDict = new Dictionary<string, AttributeData>();
         }
-
         public IAttributeGroup SetMinValue(string name, float min)
         {
             if (_attrDict.ContainsKey(name)) _attrDict[name].SetConstraintMin(min);
@@ -277,14 +274,6 @@ namespace Assets.Abstractions.RPG.Attributes
             }
 
             return dict;
-        }
-
-        public void Initialize()
-        {
-        }
-
-        public void Execute()
-        {
         }
     }
 }

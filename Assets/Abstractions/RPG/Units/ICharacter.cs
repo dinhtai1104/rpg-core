@@ -2,5 +2,6 @@
 {
     public interface ICharacter
     {
+        TEngine GetEngine<TEngine>() where TEngine : IEngine;
     }
 }

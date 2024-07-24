@@ -1,13 +1,14 @@
-﻿namespace Assets.Abstractions.RPG.Items.StackableItems
+﻿using Assets.Abstractions.RPG.Value;
+
+namespace Assets.Abstractions.RPG.Items.StackableItems
 {
     public class StackableItem : BaseRuntimeItem
     {
-        private int _amount;
-
-        public int Amount
+        private ResourceValue _amount;
+        public ResourceValue Amount
         {
-            set => _amount = value;
             get => _amount;
+            set => _amount = value;
         }
     }
 }

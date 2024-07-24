@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Assets.Abstractions.RPG.Units;
+using System;
 using System.Collections.Generic;
 
 namespace Assets.Abstractions.RPG.Attributes
 {
-    public interface IAttributeGroup
+    public interface IAttributeGroup : IEngine
     {
         IEnumerable<string> StatNames { get; }
 
