@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Assets.Abstractions.RPG.Units
 {
-    public class BaseNullEngine : IEngine
+    public abstract class BaseNullEngine : IEngine
     {
         public bool IsInitialized => false;
 

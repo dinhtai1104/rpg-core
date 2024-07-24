@@ -2,6 +2,7 @@
 
 namespace Assets.Abstractions.RPG.Items.StackableItems
 {
+    [System.Serializable]
     public class CurrencyItem : StackableItem
     {
         private ResourceValue _resourceValue;

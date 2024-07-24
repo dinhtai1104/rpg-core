@@ -1,22 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Assets.Abstractions.RPG.Misc;
+using System;
 
 namespace Assets.Abstractions.RPG.Units.Engine.Healths
 {
-    public class NullHealth : IHealth
+    public class NullHealth : BaseNullEngine, IHealth
     {
-        public bool IsInitialized => false;
+        public float CurrentHealth { set; get; }
+        public float MaxHealth { set; get; }
+        public float MinHealth { set; get; }
+        public bool Invincible { set; get; }
 
-        public bool Locked { set; get; }
+        public float HealthPercentage => 1;
 
-        public void Execute()
+        public event OnHealthChange OnValueChanged;
+
+        public void Damage(float damage, EDamageType type)
         {
         }
 
-        public void Initialize()
+        public void Healing(float amount)
+        {
+        }
+
+        public void Reset()
+        {
+        }
+
+        public void SubscribeRecieveDamageEvent(Action<float, EDamageType> callback)
         {
         }
     }

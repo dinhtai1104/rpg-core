@@ -6,8 +6,11 @@ using System.Collections.Generic;
 namespace Assets.Abstractions.RPG.Items.Accessories
 {
     public delegate void OnEnhanceDelegate(int levelEnhance);
+    [System.Serializable]
     public class BaseAccessoryItem : BaseRuntimeItem
     {
+        public override ERuntimeItem RuntimeItemType => ERuntimeItem.Equipemnt;
+
         protected SlotType _slotType;
         protected bool _isEquipped;
         protected int _level;
@@ -128,5 +131,10 @@ namespace Assets.Abstractions.RPG.Items.Accessories
         }
 
         #endregion
+
+        public override bool IsSame(BaseRuntimeItem other)
+        {
+            return false;
+        }
     }
 }
