@@ -6,6 +6,7 @@ namespace Assets.Abstractions.RPG.Items
     public abstract class BaseRuntimeItem
     {
         private int _id;
+        private string _icon;
 
         private string _description;
         private string _title;
@@ -26,6 +27,15 @@ namespace Assets.Abstractions.RPG.Items
             set => _title = value;
             get => _title;
         }
+
+        public string Icon
+        {
+            set => _icon = value;
+            get => _icon;
+        }
+        public virtual string PathUIIcon => $"Icon_{Icon}";
+
+        public virtual string PathUIPrefab => $"UI{RuntimeItemType}Item";
 
         public BaseRuntimeItem() { }
         public BaseRuntimeItem(int id) { }

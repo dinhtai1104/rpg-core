@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Assets.Abstractions.RPG.Items.UsableItems
 {
     [System.Serializable]
-    public class StatsItem : UseableItem
+    public class StatsItem : UsableItem
     {
         public override EUseable UseableType => EUseable.Stat;
         [SerializeField] private AttributeModifierData _modifierData;

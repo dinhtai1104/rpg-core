@@ -7,7 +7,7 @@ using System.Collections.Generic;
 namespace Assets.Abstractions.RPG.Items.UsableItems
 {
     [System.Serializable]
-    public class InvincibleItem : UseableItem
+    public class InvincibleItem : UsableItem
     {
         private float _timeInvincible;
 

@@ -5,12 +5,12 @@ using Assets.Abstractions.RPG.Units;
 namespace Assets.Abstractions.RPG.Items.UsableItems
 {
     [System.Serializable]
-    public abstract class UseableItem : StackableItem
+    public abstract class UsableItem : StackableItem
     {
-        public override ERuntimeItem RuntimeItemType => ERuntimeItem.Useable;
+        public override ERuntimeItem RuntimeItemType => ERuntimeItem.Usable;
         public abstract EUseable UseableType { get; }
 
-        public UseableItem(int amount, float data) : base()
+        public UsableItem(int amount, float data) : base()
         {
             Amount = new Value.ResourceValue();
             Amount.SetAmount(amount);
@@ -27,7 +27,7 @@ namespace Assets.Abstractions.RPG.Items.UsableItems
 
         public override bool IsSame(BaseRuntimeItem other)
         {
-            return base.IsSame(other) && (other as UseableItem).UseableType == UseableType;
+            return base.IsSame(other) && (other as UsableItem).UseableType == UseableType;
         }
     }
 }

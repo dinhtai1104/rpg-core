@@ -3,7 +3,8 @@
     public enum ERuntimeItem
     {
         None,
-        Equipemnt,
-        Useable,
+        Accessory,
+        Currency,
+        Usable,
     }
 }

@@ -12,7 +12,7 @@ namespace Assets.Abstractions.RPG.Inventory
     public class InventoryHandler
     {
         [ShowInInspector] private List<BaseAccessoryItem> _accessoryItems;
-        [ShowInInspector] private List<UseableItem> _consumableItems;
+        [ShowInInspector] private List<UsableItem> _consumableItems;
 
         public InventoryHandler()
         {
@@ -29,7 +29,7 @@ namespace Assets.Abstractions.RPG.Inventory
                     _accessoryItems.Remove(item as BaseAccessoryItem);
                     break;
                 case EInventoryPack.Consumable:
-                    _consumableItems.Remove(item as UseableItem);
+                    _consumableItems.Remove(item as UsableItem);
                     break;
             }
         }

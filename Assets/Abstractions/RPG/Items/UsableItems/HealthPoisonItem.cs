@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Assets.Abstractions.RPG.Items.UsableItems
 {
     [System.Serializable]
-    public class HealthPoisonItem : UseableItem
+    public class HealthPoisonItem : UsableItem
     {
         public override EUseable UseableType => EUseable.HealthPoison;
         [SerializeField] private float _healthHeal;

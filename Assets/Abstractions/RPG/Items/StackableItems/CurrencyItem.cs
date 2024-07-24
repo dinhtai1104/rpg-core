@@ -1,18 +1,20 @@
-﻿using Assets.Abstractions.RPG.Value;
+﻿using Assets.Abstractions.RPG.Items.UsableItems;
+using Assets.Abstractions.RPG.Misc;
+using Assets.Abstractions.RPG.Value;
 
 namespace Assets.Abstractions.RPG.Items.StackableItems
 {
     [System.Serializable]
     public class CurrencyItem : StackableItem
     {
-        private ResourceValue _resourceValue;
+        private ECurrency _currencyType;
+        public ECurrency CurrencyType { get => _currencyType; set => _currencyType = value; }
 
-        public ResourceValue Value
+
+
+        public override bool IsSame(BaseRuntimeItem other)
         {
-            set => _resourceValue = value;
-            get => _resourceValue;
+            return base.IsSame(other) && (other as CurrencyItem).CurrencyType == CurrencyType;
         }
-
-        public int TotalValue => Value.TotalAmount;
     }
 }

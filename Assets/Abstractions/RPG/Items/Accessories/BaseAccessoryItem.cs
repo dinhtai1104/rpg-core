@@ -9,7 +9,7 @@ namespace Assets.Abstractions.RPG.Items.Accessories
     [System.Serializable]
     public class BaseAccessoryItem : BaseRuntimeItem
     {
-        public override ERuntimeItem RuntimeItemType => ERuntimeItem.Equipemnt;
+        public override ERuntimeItem RuntimeItemType => ERuntimeItem.Accessory;
 
         protected SlotType _slotType;
         protected bool _isEquipped;
@@ -136,5 +136,7 @@ namespace Assets.Abstractions.RPG.Items.Accessories
         {
             return false;
         }
+
+        public override string PathUIIcon => $"Accessory_{Icon}";
     }
 }
