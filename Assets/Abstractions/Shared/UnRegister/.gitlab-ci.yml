@@ -1,0 +1,12 @@
+stages:
+  - deploy
+
+deploy:
+  stage: deploy
+  image: node:18.2.0
+  only:
+    - master
+    - main
+  script:
+    - echo "//upm.unimob.synology.me/:_authToken=${UPM_TOKEN}" > .npmrc
+    - npm publish
