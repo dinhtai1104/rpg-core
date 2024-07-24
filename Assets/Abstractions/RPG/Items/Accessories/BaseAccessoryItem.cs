@@ -1,11 +1,7 @@
 ﻿using Assets.Abstractions.RPG.Attributes;
 using Assets.Abstractions.RPG.Misc;
 using Assets.Abstractions.RPG.Units.Equipment;
-using Sirenix.OdinInspector;
-using System;
 using System.Collections.Generic;
-using System.Net.Sockets;
-using Unity.VisualScripting.Antlr3.Runtime.Misc;
 
 namespace Assets.Abstractions.RPG.Items.Accessories
 {
