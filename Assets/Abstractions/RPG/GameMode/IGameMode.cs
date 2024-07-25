@@ -6,7 +6,7 @@ namespace Assets.Abstractions.RPG.GameMode
 {
     public interface IGameMode
     {
-        EGameMode Mode { get; set; }
+        EGameMode Mode { get; }
         bool IsEndGame { get; }
         void SetData(IUserGameplayData userGameplayData);
         UniTask PreloadGame();

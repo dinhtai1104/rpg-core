@@ -1,7 +1,6 @@
 ﻿using Assets.Abstractions.RPG.GameServices;
 using Assets.Abstractions.RPG.Items;
 using Assets.Abstractions.RPG.Items.Accessories;
-using Assets.Abstractions.RPG.Items.UsableItems;
 using Assets.Abstractions.RPG.Manager;
 using Assets.Abstractions.RPG.Misc;
 using Sirenix.OdinInspector;

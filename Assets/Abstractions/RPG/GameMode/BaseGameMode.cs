@@ -1,5 +1,6 @@
 ﻿using Assets.Abstractions.RPG.LocalData.Gameplay;
 using Assets.Abstractions.RPG.Misc;
+using Assets.Abstractions.Shared.Foundation;
 using Cysharp.Threading.Tasks;
 using System;
 using System.Collections.Generic;
@@ -12,16 +13,20 @@ namespace Assets.Abstractions.RPG.GameMode
     public abstract class BaseGameMode : IGameMode
     {
         private IUserGameplayData userGameplayData;
-        private EGameMode mode;
         public bool IsEndGame { get; private set; }
         protected IUserGameplayData UserGameplayData { get => userGameplayData; set => userGameplayData = value; }
-        public EGameMode Mode { get => mode; set => mode = value; }
+        public abstract EGameMode Mode { get; }
+        public BaseGameMode()
+        {
 
+        }
         public virtual void Enter()
         {
+            Log.Info($"{GetType().Name} Enter");
         }
         public virtual void StartMode()
         {
+            Log.Info($"{GetType().Name} Start");
         }
         public void OnExecute()
         {
@@ -35,12 +40,14 @@ namespace Assets.Abstractions.RPG.GameMode
         }
         public virtual void End()
         {
+            Log.Info($"{GetType().Name} End");
         }
         public abstract bool EndGameCondition();
         protected abstract void OnUpdate();
 
         public virtual UniTask PreloadGame()
         {
+            Log.Info($"{GetType().Name} Preloader");
             return UniTask.CompletedTask;
         }
 

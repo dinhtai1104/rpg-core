@@ -1,11 +1,6 @@
 ﻿using Assets.Abstractions.RPG.Items.Accessories;
-using Assets.Abstractions.RPG.Manager;
-using Assets.Abstractions.RPG.Test;
-using Assets.Abstractions.Shared.Core;
-using Assets.Abstractions.Shared.Core.DI;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Assets.Abstractions.RPG.UserInterface.Items.Accessories
 {

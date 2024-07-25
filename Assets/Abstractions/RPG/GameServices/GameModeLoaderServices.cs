@@ -7,12 +7,13 @@ using Cysharp.Threading.Tasks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 namespace Assets.Abstractions.RPG.GameServices
 {
     public interface IGameModeLoaderServices : IService, IInitializable
     {
-        UniTask LoadGameMode(IUserGameplayData userGameplayData);
+        UniTask<IGameMode> LoadGameMode(IUserGameplayData userGameplayData, CancellationToken token = default);
     }
 
     [Service(typeof(IGameModeLoaderServices))]
@@ -23,9 +24,13 @@ namespace Assets.Abstractions.RPG.GameServices
         public bool Initialized { set; get; }
 
         private Dictionary<EGameMode, Type> _gameModeLookup;
+        private List<Type> _gameModeList;
         private IGameMode _gameModeCurrent;
         public UniTask OnInitialize(IArchitecture architecture)
         {
+            _gameModeList = new();
+            _gameModeLookup = new();
+
             var assemblies = AppDomain.CurrentDomain.GetAssemblies();
             var modes = assemblies
                 .SelectMany(assembly => assembly.GetTypes())
@@ -34,25 +39,22 @@ namespace Assets.Abstractions.RPG.GameServices
 
             foreach (var mode in modes)
             {
-                var gameMode = (IGameMode)mode;
-                _gameModeLookup.Add(gameMode.Mode, gameMode.GetType());
+                var ins = (IGameMode)Activator.CreateInstance(mode);
+
+                //_gameModeList.Add(mode);
+                //var gameMode = ((IGameMode)mode).Mode;
+                _gameModeLookup.Add(ins.Mode, mode);
             }
             return UniTask.CompletedTask;
         }
-        public async UniTask LoadGameMode(IUserGameplayData userGameplayData)
+        public async UniTask<IGameMode> LoadGameMode(IUserGameplayData userGameplayData, CancellationToken token = default)
         {
+            await UniTask.Yield();
             // load game mode
             var mode = userGameplayData.GameMode;
             _gameModeCurrent = (IGameMode)Activator.CreateInstance(_gameModeLookup[mode]);
             Log.Info("Game Mode Created! - " + _gameModeCurrent.ToString());
-
-            await UniTask.Yield();
-            // Create Loadscene
-
-            await UniTask.Yield();
-            await _gameModeCurrent.PreloadGame();
-
-            _gameModeCurrent.Enter();
+            return _gameModeCurrent;
         }
 
     }
