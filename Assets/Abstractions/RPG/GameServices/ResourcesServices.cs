@@ -5,16 +5,16 @@ using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Assets.Abstractions.RPG.Manager
+namespace Assets.Abstractions.RPG.GameServices
 {
-    public interface IResourceManager : IService, IInitializable
+    public interface IResourceServices : IService, IInitializable
     {
         TItem Get<TItem>(string path) where TItem : Object;
         UniTask<TItem> GetAsync<TItem>(string path) where TItem : Object;
     }
 
-    [Service(typeof(IResourceManager))]
-    public class ResourceManager : MonoBehaviour, IResourceManager
+    [Service(typeof(IResourceServices))]
+    public class ResourcesServices : MonoBehaviour, IResourceServices
     {
         public bool Initialized { get; set; }
         public int Priority => 0;
@@ -40,7 +40,7 @@ namespace Assets.Abstractions.RPG.Manager
                 _cachedObjects.Add(path, load.Result);
                 return (TItem)_cachedObjects[path];
             }
-            return default(TItem);
+            return default;
         }
         public async UniTask<TItem> GetAsync<TItem>(string path) where TItem : Object
         {
@@ -58,7 +58,7 @@ namespace Assets.Abstractions.RPG.Manager
                 _cachedObjects.Add(path, load.Result);
                 return (TItem)_cachedObjects[path];
             }
-            return default(TItem);
+            return default;
         }
         public UniTask OnInitialize(IArchitecture architecture)
         {
