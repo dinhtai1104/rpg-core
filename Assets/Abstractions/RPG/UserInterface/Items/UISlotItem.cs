@@ -1,9 +1,9 @@
-﻿using Assets.Abstractions.RPG.Items;
+﻿using Assets.Abstractions.RPG.GameServices;
+using Assets.Abstractions.RPG.Items;
 using Assets.Abstractions.RPG.Items.Accessories;
 using Assets.Abstractions.RPG.Items.UsableItems;
 using Assets.Abstractions.RPG.Manager;
 using Assets.Abstractions.RPG.Misc;
-using Assets.Abstractions.RPG.Test;
 using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
@@ -29,7 +29,7 @@ namespace Assets.Abstractions.RPG.UserInterface.Items
                 Destroy(_itemUI.gameObject);
             }
 
-            var resourceManager = Game.Instance.GetService<IResourceManager>();
+            var resourceManager = Game.Instance.GetService<IResourceServices>();
             _itemUI = Instantiate(resourceManager.Get<UIBaseItem>($"UI/Items/{runtimeItem.PathUIPrefab}"), ItemHolder);
             _itemUI.SetData(runtimeItem, this);
         }

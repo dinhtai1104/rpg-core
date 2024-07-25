@@ -7,7 +7,7 @@ using Cysharp.Threading.Tasks;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace Assets.Abstractions.RPG.Test
+namespace Assets.Abstractions.RPG.Manager
 {
     public class Game : Architecture<Game>
     {
@@ -41,7 +41,7 @@ namespace Assets.Abstractions.RPG.Test
             }
 
             if (baseRuntimeItem == null) return;
-            inventoryHandler.Add(Misc.EInventoryPack.Consumable, baseRuntimeItem);
+            inventoryHandler.Add(EInventoryPack.Consumable, baseRuntimeItem);
         }
     }
 }

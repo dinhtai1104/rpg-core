@@ -1,7 +1,7 @@
-﻿using Assets.Abstractions.RPG.Items;
+﻿using Assets.Abstractions.RPG.GameServices;
+using Assets.Abstractions.RPG.Items;
 using Assets.Abstractions.RPG.Manager;
 using Assets.Abstractions.RPG.Misc;
-using Assets.Abstractions.RPG.Test;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,9 +20,9 @@ namespace Assets.Abstractions.RPG.UserInterface.Items
             get => runtimeItem;
             set => runtimeItem = value;
         }
-        protected IResourceManager ResourceManager { get => resourceManager; set => resourceManager = value; }
+        protected IResourceServices ResourceManager { get => resourceManager; set => resourceManager = value; }
 
-        private IResourceManager resourceManager;
+        private IResourceServices resourceManager;
         protected UISlotItem _slotItem;
 
         [SerializeField] private Image _iconItem;
@@ -31,7 +31,7 @@ namespace Assets.Abstractions.RPG.UserInterface.Items
         protected override void Awake()
         {
             base.Awake();
-            ResourceManager = Game.Instance.GetService<IResourceManager>();
+            ResourceManager = Game.Instance.GetService<IResourceServices>();
         }
 
         public void SetData(BaseRuntimeItem runtimeItem, UISlotItem uiSlot)

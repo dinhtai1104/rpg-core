@@ -1,5 +1,8 @@
-﻿using Assets.Abstractions.RPG.Units;
+﻿using Assets.Abstractions.RPG.LocalData.Gameplay;
+using Assets.Abstractions.RPG.Units;
 using Assets.Abstractions.RPG.Units.Engine.Healths;
+using Cysharp.Threading.Tasks;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.Abstractions.RPG.GameMode
@@ -9,12 +12,29 @@ namespace Assets.Abstractions.RPG.GameMode
         private ICharacter mainPlayer;
         private float time = 0;
         protected ICharacter MainPlayer { get => mainPlayer; set => mainPlayer = value; }
+        protected new BaseUserGameplayData UserGameplayData => (BaseUserGameplayData)base.UserGameplayData;
 
+        public override async UniTask PreloadGame()
+        {
+            var listTask = new List<UniTask>()
+            {
+                base.PreloadGame(),
+                PreloadCharacter(),
+            };
+
+            await UniTask.WhenAll(listTask);
+        }
+
+        private async UniTask PreloadCharacter()
+        {
+            await UniTask.Yield();
+        }
 
         public override bool EndGameCondition()
         {
             return mainPlayer.GetEngine<IHealth>().CurrentHealth == 0;
         }
+
         protected override void OnUpdate()
         {
             time += Time.deltaTime;
