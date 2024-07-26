@@ -66,6 +66,8 @@ namespace Assets.Abstractions.Shared.Loader.Resource
 			return request;
 		}
 
-		public void Release(AssetRequest request) { }
+		public void Release(AssetRequest request) 
+		{ 
+		}
 	}
 }

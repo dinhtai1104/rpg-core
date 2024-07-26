@@ -11,6 +11,7 @@ namespace Assets.Abstractions.RPG.GameServices
     {
         TItem Get<TItem>(string path) where TItem : Object;
         UniTask<TItem> GetAsync<TItem>(string path) where TItem : Object;
+        void Release(string path);
     }
 
     [Service(typeof(IResourceServices))]
@@ -65,6 +66,15 @@ namespace Assets.Abstractions.RPG.GameServices
             Initialized = true;
             _assetLoader = new ResourcesAssetLoader();
             return UniTask.CompletedTask;
+        }
+
+        public void Release(string path)
+        {
+            var assetRequest = _cachedRequests[path];
+            _cachedObjects.Remove(path);
+            _cachedRequests.Remove(path);
+
+            _assetLoader.Release(assetRequest);
         }
     }
 }

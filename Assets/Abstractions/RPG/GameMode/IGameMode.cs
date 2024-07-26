@@ -1,10 +1,11 @@
 ﻿using Assets.Abstractions.RPG.LocalData.Gameplay;
 using Assets.Abstractions.RPG.Misc;
+using Assets.Abstractions.Shared.Core;
 using Cysharp.Threading.Tasks;
 
 namespace Assets.Abstractions.RPG.GameMode
 {
-    public interface IGameMode
+    public interface IGameMode : IBelongToArchitecture
     {
         EGameMode Mode { get; }
         bool IsEndGame { get; }

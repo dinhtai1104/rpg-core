@@ -10,5 +10,12 @@ namespace Assets.Abstractions.RPG.LocalData.Models
         public CharacterType Character;
         public IAttributeGroup Attributes;
         public InventoryHandler Inventory;
+
+        public CharacterData(CharacterType character, IAttributeGroup attributes, InventoryHandler inventory)
+        {
+            Character = character;
+            Attributes = attributes;
+            Inventory = inventory;
+        }
     }
 }

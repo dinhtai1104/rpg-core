@@ -1,14 +1,16 @@
-﻿using Assets.Abstractions.Shared.Foundation;
+﻿using Abstractions.Shared.MEC;
+using Assets.Abstractions.Shared.Foundation;
 using Cysharp.Threading.Tasks;
+using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace Assets.Abstractions.RPG.LocalData
 {
-    public delegate void OnSceneStartLoad(SceneLoaderData data);
-    public delegate void OnSceneLoaded(SceneLoaderData data);
-    public delegate void OnSceneActive(SceneLoaderData data);
+    public delegate void OnSceneStartLoad(SceneLoader data);
+    public delegate void OnSceneLoaded(SceneLoader data);
+    public delegate void OnSceneActive(SceneLoader data);
 
     public class SceneKey
     {
@@ -18,7 +20,7 @@ namespace Assets.Abstractions.RPG.LocalData
 
 
     [System.Serializable]
-    public class SceneLoaderData
+    public class SceneLoader
     {
         private string key;
 
@@ -27,10 +29,10 @@ namespace Assets.Abstractions.RPG.LocalData
         public OnSceneActive OnSceneActive;
 
         private AsyncOperation task;
-
+        private bool isLoaded = false;
         public string Key { get => key; set => key = value; }
 
-        public SceneLoaderData(string key)
+        public SceneLoader(string key)
         {
             this.Key = key;
         }
@@ -41,21 +43,15 @@ namespace Assets.Abstractions.RPG.LocalData
             OnSceneStartLoad?.Invoke(this);
             task = SceneManager.LoadSceneAsync(Key);
             task.allowSceneActivation = false;
-            bool isDone = false;
-            task.completed += (a) =>
-            {
-                isDone = true;
-            };
-            await UniTask.WaitUntil(() => isDone, cancellationToken: cts);
+            await UniTask.WaitUntil(() => task.progress >= 0.9f);
             Log.Info($"{GetType().Name} - Done Load");
             OnSceneLoaded?.Invoke(this);
         }
-
         public void ActiveScene()
         {
             Log.Info($"{GetType().Name} - Active Scene - {Key}");
             OnSceneActive?.Invoke(this);
-            task.allowSceneActivation = true;
+            task.allowSceneActivation = true; 
         }
     }
 }

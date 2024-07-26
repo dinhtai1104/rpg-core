@@ -14,7 +14,7 @@ namespace Assets.Abstractions.RPG.GameMode
         protected ICharacter MainPlayer { get => mainPlayer; set => mainPlayer = value; }
         protected new BaseUserGameplayData UserGameplayData => (BaseUserGameplayData)base.UserGameplayData;
 
-        public override async UniTask PreloadGame()
+        public override UniTask PreloadGame()
         {
             var listTask = new List<UniTask>()
             {
@@ -22,14 +22,22 @@ namespace Assets.Abstractions.RPG.GameMode
                 PreloadCharacter(),
             };
 
-            await UniTask.WhenAll(listTask);
+            return UniTask.WhenAll(listTask);
         }
 
         private async UniTask PreloadCharacter()
         {
-            await UniTask.Yield();
+            var characterPath = "Unit/" + UserGameplayData.CharacterData.Character;
+            var characterObjectTask = PreLoader.PreLoad<GameObject>(characterPath);
+            await characterObjectTask;
         }
 
+        public override void Enter()
+        {
+            base.Enter();
+            var characterPath = "Unit/" + UserGameplayData.CharacterData.Character;
+            Object.Instantiate(GetAsset<GameObject>(characterPath));
+        }
         public override bool EndGameCondition()
         {
             return mainPlayer.GetEngine<IHealth>().CurrentHealth == 0;

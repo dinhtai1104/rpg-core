@@ -4,7 +4,9 @@ using Assets.Abstractions.RPG.Items;
 using Assets.Abstractions.RPG.Items.UsableItems;
 using Assets.Abstractions.RPG.LocalData;
 using Assets.Abstractions.RPG.LocalData.Gameplay;
+using Assets.Abstractions.RPG.LocalData.Models;
 using Assets.Abstractions.RPG.Misc;
+using Assets.Abstractions.RPG.Units;
 using Assets.Abstractions.Shared.Core;
 using Cysharp.Threading.Tasks;
 using Sirenix.OdinInspector;
@@ -50,13 +52,13 @@ namespace Assets.Abstractions.RPG.Manager
         [Button]
         public void TestLoadScene(string sceneName, EGameMode modeGame)
         {
-            var sceneLoader = new SceneLoaderData(sceneName);
+            var sceneLoader = new SceneLoader(sceneName);
             if (modeGame != EGameMode.None)
             {
                 IUserGameplayData userGameplayData = null;
                 if (modeGame == EGameMode.Campaign)
                 {
-                    userGameplayData = new CampaignUserGameplayData(modeGame, null, 1);
+                    userGameplayData = new CampaignUserGameplayData(modeGame, new CharacterData(CharacterType.Fighter, null, null), 1);
                 }
                 else if (modeGame == EGameMode.DailyDungeon)
                 {
@@ -74,11 +76,10 @@ namespace Assets.Abstractions.RPG.Manager
                 {
                     var gameModeServices = GetService<IGameModeLoaderServices>();
                     var gameModeLoader = await gameModeServices.LoadGameMode(userGameplayData);
-
                     await gameModeLoader.PreloadGame();
                     gameModeLoader.Enter();
 
-                    data.ActiveScene();
+                    GetService<IGameSceneLoaderServices>().ActiveScene(data.Key);
                 };
 
                 GetService<IGameSceneLoaderServices>().LoadScene(sceneLoader, this.destroyCancellationToken);

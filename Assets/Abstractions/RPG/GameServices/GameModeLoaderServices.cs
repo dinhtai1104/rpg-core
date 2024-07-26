@@ -25,7 +25,6 @@ namespace Assets.Abstractions.RPG.GameServices
 
         private Dictionary<EGameMode, Type> _gameModeLookup;
         private List<Type> _gameModeList;
-        private IGameMode _gameModeCurrent;
         public UniTask OnInitialize(IArchitecture architecture)
         {
             _gameModeList = new();
@@ -49,10 +48,11 @@ namespace Assets.Abstractions.RPG.GameServices
         }
         public async UniTask<IGameMode> LoadGameMode(IUserGameplayData userGameplayData, CancellationToken token = default)
         {
-            await UniTask.Yield();
+            await UniTask.Delay(0);
             // load game mode
             var mode = userGameplayData.GameMode;
-            _gameModeCurrent = (IGameMode)Activator.CreateInstance(_gameModeLookup[mode]);
+            var _gameModeCurrent = (IGameMode)Activator.CreateInstance(_gameModeLookup[mode]);
+            _gameModeCurrent.SetData(userGameplayData);
             Log.Info("Game Mode Created! - " + _gameModeCurrent.ToString());
             return _gameModeCurrent;
         }
