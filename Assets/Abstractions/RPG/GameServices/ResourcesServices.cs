@@ -51,8 +51,9 @@ namespace Assets.Abstractions.RPG.GameServices
                 return (TItem)_cachedObjects[path];
             }
 
-            var load = _assetLoader.LoadAsync<TItem>(path);
+            var load = _assetLoader.Load<TItem>(path);
             await load.Task;
+            Debug.Log($"Load Success Async: {typeof(TItem)} - {path}");
             if (load.Result != null)
             {
                 _cachedRequests.Add(path, load);

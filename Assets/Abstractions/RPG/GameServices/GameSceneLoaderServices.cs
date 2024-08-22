@@ -8,7 +8,7 @@ namespace Assets.Abstractions.RPG.GameServices
 {
     public interface IGameSceneLoaderServices : IService, IInitializable
     {
-        UniTask LoadScene(SceneLoader sceneData, CancellationToken cts);
+        UniTask LoadScene(SceneLoader sceneData, CancellationToken cts = default);
         void ActiveScene(string sceneKey);
     }
 
@@ -26,7 +26,7 @@ namespace Assets.Abstractions.RPG.GameServices
             return UniTask.CompletedTask;
         }
 
-        public async UniTask LoadScene(SceneLoader sceneData, CancellationToken cts)
+        public async UniTask LoadScene(SceneLoader sceneData, CancellationToken cts = default)
         {
             _sceneLoading.TryAdd(sceneData.Key, sceneData);
             await sceneData.LoadAsync(cts);

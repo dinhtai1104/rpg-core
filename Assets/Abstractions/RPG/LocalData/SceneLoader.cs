@@ -31,6 +31,7 @@ namespace Assets.Abstractions.RPG.LocalData
         private AsyncOperation task;
         private bool isLoaded = false;
         public string Key { get => key; set => key = value; }
+        public bool IsLoaded => isLoaded;
 
         public SceneLoader(string key)
         {
@@ -46,6 +47,7 @@ namespace Assets.Abstractions.RPG.LocalData
             await UniTask.WaitUntil(() => task.progress >= 0.9f);
             Log.Info($"{GetType().Name} - Done Load");
             OnSceneLoaded?.Invoke(this);
+            isLoaded = true;
         }
         public void ActiveScene()
         {
