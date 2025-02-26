@@ -14,7 +14,7 @@ namespace Assets.Abstractions.Interface.Transitions
     {
         private RectTransform rectTransform;
         [SerializeField] private Vector2 fromScale;
-        [SerializeField] private Vector2 toScale;
+        private Vector2 toScale;
 
         public override void Init()
         {
@@ -22,6 +22,7 @@ namespace Assets.Abstractions.Interface.Transitions
             if (!rectTransform)
             {
                 rectTransform = GetComponent<RectTransform>();
+                toScale = rectTransform.localScale;
             }
             rectTransform.localScale = fromScale;
         }

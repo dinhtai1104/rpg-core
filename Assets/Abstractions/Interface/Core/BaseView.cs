@@ -50,7 +50,10 @@ namespace Assets.Abstractions.GameScene.Core
             canvasManager = manager;
             canvas = GetComponent<Canvas>();
             graphicRaycast = GetComponent<GraphicRaycaster>();
-            ButtonClose.AddListener(OnClose);
+            if (ButtonClose)
+                ButtonClose.AddListener(OnClose);
+            LoadTransitions();
+            graphicRaycast.enabled = false;
         }
 
         private void OnClose()
@@ -60,7 +63,11 @@ namespace Assets.Abstractions.GameScene.Core
 
         public virtual UniTask PostInit(IViewModel viewModel)
         {
-            LoadTransitions();
+            graphicRaycast.enabled = false;
+            foreach (var trans in _transitions)
+            {
+                trans.Init();
+            }
             cts = new();
             this.viewModal = viewModel;
             return UniTask.CompletedTask;
@@ -75,9 +82,9 @@ namespace Assets.Abstractions.GameScene.Core
         public async UniTask Show()
         {
             // play animation
-            canvas.enabled = true;
-            graphicRaycast.enabled = true;
+            gameObject.SetActive(true);
             await ShowAnimation();
+            graphicRaycast.enabled = true;
             IsVisible = true;
         }
 
@@ -87,14 +94,14 @@ namespace Assets.Abstractions.GameScene.Core
             graphicRaycast.enabled = false;
             await HideAnimation().ContinueWith(()=>
             {
-                canvas.enabled = false;
+                gameObject.SetActive(false);
             });
         }
 
         public void HideNow()
         {
-            canvas.enabled = false;
             graphicRaycast.enabled = false;
+            gameObject.SetActive(false);
         }
 
         public virtual void OnUpdate()
@@ -113,6 +120,9 @@ namespace Assets.Abstractions.GameScene.Core
             foreach (var trans in _transitions)
             {
                 trans.Init();
+            }
+            foreach (var trans in _transitions)
+            {
                 list.Add(trans.Show(CancellationToken));
             }
             await UniTask.WhenAll(list).AttachExternalCancellation(CancellationToken);

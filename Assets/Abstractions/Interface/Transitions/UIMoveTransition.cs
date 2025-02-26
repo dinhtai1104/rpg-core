@@ -14,7 +14,7 @@ namespace Assets.Abstractions.Interface.Transitions
     {
         private RectTransform rectTransform;
         [SerializeField] private Vector2 fromAnchor;
-        [SerializeField] private Vector2 toAnchor;
+        private Vector2 beginAnchor;
 
         public override void Init()
         {
@@ -22,19 +22,20 @@ namespace Assets.Abstractions.Interface.Transitions
             if (!rectTransform)
             {
                 rectTransform = GetComponent<RectTransform>();
+                beginAnchor = rectTransform.anchoredPosition;
             }
-            rectTransform.anchoredPosition = fromAnchor;
+            rectTransform.anchoredPosition = beginAnchor + fromAnchor;
         }
         public override async UniTask Show(CancellationToken cts)
         {
             await base.Show(cts);
-            await rectTransform.DOAnchorPos(toAnchor, Settings.Enter.Duration).SetEase(Settings.Enter.Curve)
+            await rectTransform.DOAnchorPos(beginAnchor, Settings.Enter.Duration).SetEase(Settings.Enter.Curve)
                 .SetDelay(Settings.Enter.Delay).ToUniTask(TweenCancelBehaviour.Complete, cts);
         }
         public override async UniTask Hide(CancellationToken cts)
         {
             await base.Hide(cts);
-            await rectTransform.DOAnchorPos(fromAnchor, Settings.Exit.Duration).SetEase(Settings.Exit.Curve)
+            await rectTransform.DOAnchorPos(beginAnchor + fromAnchor, Settings.Exit.Duration).SetEase(Settings.Exit.Curve)
                       .SetDelay(Settings.Exit.Delay).ToUniTask(TweenCancelBehaviour.Complete, cts);
         }
     }

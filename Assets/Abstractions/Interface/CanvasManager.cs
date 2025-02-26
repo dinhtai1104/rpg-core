@@ -22,6 +22,7 @@ namespace Assets.Abstractions.GameScene
         bool Available(string address);
         UniTask CloseAllView(bool useTransition);
         UniTask CloseView(IView loading);
+        UniTask CloseTopView();
     }
 
     public class ViewCollection
@@ -48,13 +49,25 @@ namespace Assets.Abstractions.GameScene
         [Inject] private IResourceServices _resources;
         [Inject] private IInjector _injector;
         private List<IView> _views;
+        private List<IView> _viewsVisible;
         private Dictionary<string, ViewCollection> _viewsMap;
 
         public async UniTask OnInitialize(IArchitecture architecture)
         {
             _views = new();
             _viewsMap = new();
+            _viewsVisible = new();
             canvas = Instantiate(await _resources.GetAsync<GameObject>("UI/Canvas"), transform).GetComponent<Canvas>();
+        }
+
+        private void AddViewVisible(IView view)
+        {
+            _viewsVisible.Add(view);
+        }
+        
+        private void RemoveViewVisible(IView view)
+        {
+            _viewsVisible.Remove(view);
         }
 
         public async UniTask<IView> ShowView(IViewModel viewModal)
@@ -67,6 +80,8 @@ namespace Assets.Abstractions.GameScene
                 view.Order = GetNextOrder();
                 await view.PostInit(viewModal);
                 await view.Show();
+
+                AddViewVisible(view);
                 return view;
             }
 
@@ -81,6 +96,7 @@ namespace Assets.Abstractions.GameScene
                 viewInstance.Order = GetNextOrder();
                 await viewInstance.PostInit(viewModal);
                 await viewInstance.Show();
+                AddViewVisible(viewInstance);
 
                 _views.Add(viewInstance);
                 if (!_viewsMap.ContainsKey(address))
@@ -119,6 +135,10 @@ namespace Assets.Abstractions.GameScene
 
         public void OnUpdate()
         {
+            foreach (var view in _viewsVisible)
+            {
+                view.OnUpdate();
+            }
         }
 
         public bool Available(string address)
@@ -130,27 +150,27 @@ namespace Assets.Abstractions.GameScene
         public UniTask CloseAllView(bool useTransition)
         {
             var task = new List<UniTask>();
-            foreach (var view in _views)
+            for (int i = _viewsVisible.Count - 1; i >= 0; i--)
             {
-                if (view.IsVisible)
+                var view = _viewsVisible[i];
+                if (useTransition)
                 {
-                    if (useTransition)
-                    {
-                        task.Add(view.Hide());
-                    }
-                    else
-                    {
-                        task.Add(UniTask.RunOnThreadPool(() => view.HideNow()));
-                    }
+                    task.Add(CloseView(view));
+                }
+                else
+                {
+                    task.Add(UniTask.RunOnThreadPool(() => view.HideNow()));
                 }
             }
             return UniTask.WhenAll(task);
         }
 
-        public UniTask CloseView(IView loading)
+        public UniTask CloseView(IView view)
         {
-            if (loading == null) return UniTask.CompletedTask;
-            return loading.Hide();
+            if (view == null) return UniTask.CompletedTask;
+            RemoveViewVisible(view);
+
+            return view.Hide();
         }
 
         public async UniTask Initialize()
@@ -166,6 +186,15 @@ namespace Assets.Abstractions.GameScene
         public void ShowMessage(string text)
         {
             ShowView(new MessagePanelModel() { Addressable = "UI/UIMessagePanel", Message = text }).Forget();
+        }
+
+        public async UniTask CloseTopView()
+        {
+            if (_viewsVisible.Count > 0)
+            {
+                var view = _viewsVisible[0];
+                await CloseView(view);
+            }
         }
     }
 }
