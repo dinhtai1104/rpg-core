@@ -37,7 +37,6 @@ namespace Assets.Abstractions.RPG.GameServices
             var load = _assetLoader.Load<TItem>(path);
             if (load.Result != null)
             {
-                _cachedRequests.Add(path, load);
                 _cachedObjects.Add(path, load.Result);
                 return (TItem)_cachedObjects[path];
             }

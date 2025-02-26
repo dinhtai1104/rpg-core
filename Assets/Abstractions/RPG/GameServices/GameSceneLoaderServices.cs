@@ -1,5 +1,6 @@
 ﻿using Assets.Abstractions.RPG.LocalData;
 using Assets.Abstractions.Shared.Core;
+using Assets.Abstractions.Shared.Core.DI;
 using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
 using System.Threading;
@@ -9,7 +10,7 @@ namespace Assets.Abstractions.RPG.GameServices
     public interface IGameSceneLoaderServices : IService, IInitializable
     {
         UniTask LoadScene(SceneLoader sceneData, CancellationToken cts = default);
-        void ActiveScene(string sceneKey);
+        UniTask ActiveScene(string sceneKey);
     }
 
     [Service(typeof(IGameSceneLoaderServices))]
@@ -33,9 +34,9 @@ namespace Assets.Abstractions.RPG.GameServices
 
         }
 
-        public void ActiveScene(string sceneKey)
+        public async UniTask ActiveScene(string sceneKey)
         {
-            _sceneLoading[sceneKey].ActiveScene();
+            await _sceneLoading[sceneKey].ActiveScene();
             _sceneLoading.Remove(sceneKey);
         }
     }

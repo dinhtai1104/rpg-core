@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using Assets.Abstractions.RPG.LocalData.Models;
 using Assets.Abstractions.Shared.Core;
 using Assets.Abstractions.RPG.GameMode;
+using Assets.Abstractions.Shared.Core.DI;
 
 namespace Assets.Abstractions.RPG.Gameplay.Commands
 {
@@ -33,12 +34,7 @@ namespace Assets.Abstractions.RPG.Gameplay.Commands
     }
     public class LoadGameModeCommandHandler : ICommandHandler<LoadGameModeCommand, IGameMode>
     {
-        private IArchitecture _architecture;
-
-        public LoadGameModeCommandHandler(IArchitecture architecture)
-        {
-            _architecture = architecture;
-        }
+        [Inject] private IArchitecture _architecture;
 
         public async UniTask<IGameMode> Execute(LoadGameModeCommand command, CancellationToken cancellationToken = default)
         {

@@ -20,7 +20,7 @@ namespace Assets.Abstractions.RPG.Manager
 {
     public class Game : Architecture<Game>
     {
-        public override bool InjectSceneLoadedDependencies => false;
+        public override bool InjectSceneLoadedDependencies => true;
         [SerializeField] private InventoryHandler inventoryHandler;
 
         protected override async UniTask OnInitialize()
@@ -34,8 +34,8 @@ namespace Assets.Abstractions.RPG.Manager
         private void BindCommand()
         {
             GetService<ICommandBusService>().Register(new StartGameCommandHandler());
-            GetService<ICommandBusService>().Register(new LoadSceneCommandHandler(this));
-            GetService<ICommandBusService>().Register(new LoadGameModeCommandHandler(this));
+            GetService<ICommandBusService>().Register(new LoadSceneCommandHandler());
+            GetService<ICommandBusService>().Register(new LoadGameModeCommandHandler());
         }
 
 

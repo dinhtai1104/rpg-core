@@ -37,18 +37,16 @@ namespace Assets.Abstractions.RPG.Gameplay.Commands
     }
     public class LoadSceneCommandHandler : ICommandHandler<LoadSceneCommand>
     {
-        private IArchitecture _architecture;
-        public LoadSceneCommandHandler(IArchitecture architecture)
-        {
-            this._architecture = architecture;
-        }
+        [Inject] private IArchitecture _architecture;
 
         public async UniTask Execute(LoadSceneCommand command, CancellationToken cancellationToken = default)
         {
             var sceneLoader = new SceneLoader(command.SceneName);
-            sceneLoader.OnSceneLoaded += async (data) =>
+            _architecture.Injector.Resolve(sceneLoader);
+            _architecture.Injector.Resolve(command);
+            sceneLoader.OnSceneLoaded += (data) =>
             {
-                _architecture.GetService<IGameSceneLoaderServices>().ActiveScene(data.Key);
+               return _architecture.GetService<IGameSceneLoaderServices>().ActiveScene(data.Key);
             };
 
             await _architecture.GetService<IGameSceneLoaderServices>().LoadScene(sceneLoader);

@@ -2,6 +2,7 @@
 using Assets.Abstractions.RPG.LocalData.Gameplay;
 using Assets.Abstractions.RPG.Misc;
 using Assets.Abstractions.Shared.Core;
+using Assets.Abstractions.Shared.Core.DI;
 using Assets.Abstractions.Shared.Foundation;
 using Cysharp.Threading.Tasks;
 using System;

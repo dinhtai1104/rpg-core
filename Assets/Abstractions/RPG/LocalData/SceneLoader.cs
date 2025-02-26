@@ -1,4 +1,7 @@
 ﻿using Abstractions.Shared.MEC;
+using Assets.Abstractions.GameScene;
+using Assets.Abstractions.GameScene.Interface;
+using Assets.Abstractions.Shared.Core.DI;
 using Assets.Abstractions.Shared.Foundation;
 using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
@@ -8,9 +11,9 @@ using UnityEngine.SceneManagement;
 
 namespace Assets.Abstractions.RPG.LocalData
 {
-    public delegate void OnSceneStartLoad(SceneLoader data);
-    public delegate void OnSceneLoaded(SceneLoader data);
-    public delegate void OnSceneActive(SceneLoader data);
+    public delegate UniTask OnSceneStartLoad(SceneLoader data);
+    public delegate UniTask OnSceneLoaded(SceneLoader data);
+    public delegate UniTask OnSceneActive(SceneLoader data);
 
     public class SceneKey
     {
@@ -32,7 +35,10 @@ namespace Assets.Abstractions.RPG.LocalData
         private bool isLoaded = false;
         public string Key { get => key; set => key = value; }
         public bool IsLoaded => isLoaded;
-
+        [Inject] ICanvasManager canvas;
+        private IView loading;
+        float timeLoad = Time.time;
+        float offset = 0;
         public SceneLoader(string key)
         {
             this.Key = key;
@@ -40,20 +46,42 @@ namespace Assets.Abstractions.RPG.LocalData
 
         public async UniTask LoadAsync(CancellationToken cts = default)
         {
+            timeLoad = Time.time;
+            loading = await canvas.ShowView(new BaseViewModel() { Addressable = "UI/UILoadingPanel", MinTimeLoading = 3f });
+            
             Log.Info($"{GetType().Name} - Start Load");
-            OnSceneStartLoad?.Invoke(this);
+            if (OnSceneStartLoad != null)
+                await OnSceneStartLoad(this);
+
+            offset += Time.time - timeLoad;
+            timeLoad = Time.time;
+
             task = SceneManager.LoadSceneAsync(Key);
             task.allowSceneActivation = false;
+
             await UniTask.WaitUntil(() => task.progress >= 0.9f);
             Log.Info($"{GetType().Name} - Done Load");
-            OnSceneLoaded?.Invoke(this);
+
+            if (OnSceneLoaded != null)
+                await OnSceneLoaded(this);
+
+            offset += Time.time - timeLoad;
+            timeLoad = Time.time;
+
             isLoaded = true;
         }
-        public void ActiveScene()
+        public async UniTask ActiveScene()
         {
             Log.Info($"{GetType().Name} - Active Scene - {Key}");
-            OnSceneActive?.Invoke(this);
-            task.allowSceneActivation = true; 
+            if (OnSceneActive != null)
+                await OnSceneActive(this);
+            task.allowSceneActivation = true;
+            offset += Time.time - timeLoad;
+            timeLoad = Time.time;
+
+            if ((loading.ViewModel.MinTimeLoading - offset) > 0)
+                await UniTask.Delay((int)((loading.ViewModel.MinTimeLoading - offset) * 1000));
+            await canvas.CloseView(loading);
         }
     }
 }
