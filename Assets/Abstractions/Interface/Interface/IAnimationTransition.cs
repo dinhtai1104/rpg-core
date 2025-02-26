@@ -10,6 +10,7 @@ namespace Assets.Abstractions.GameScene.Interface
 {
     public interface IAnimationTransition
     {
+        void Init();
         UniTask Show(CancellationToken cts);
         UniTask Hide(CancellationToken cts);
     }

@@ -1,6 +1,7 @@
 ﻿using Abstractions.Shared.MEC;
 using Assets.Abstractions.GameScene;
 using Assets.Abstractions.GameScene.Interface;
+using Assets.Abstractions.GameScene.Loading;
 using Assets.Abstractions.Shared.Core.DI;
 using Assets.Abstractions.Shared.Foundation;
 using Cysharp.Threading.Tasks;
@@ -39,6 +40,7 @@ namespace Assets.Abstractions.RPG.LocalData
         private IView loading;
         float timeLoad = Time.time;
         float offset = 0;
+        private LoadingModel loadingModel;
         public SceneLoader(string key)
         {
             this.Key = key;
@@ -47,7 +49,8 @@ namespace Assets.Abstractions.RPG.LocalData
         public async UniTask LoadAsync(CancellationToken cts = default)
         {
             timeLoad = Time.time;
-            loading = await canvas.ShowView(new BaseViewModel() { Addressable = "UI/UILoadingPanel", MinTimeLoading = 3f });
+            loadingModel = new LoadingModel() { Addressable = "UI/UILoadingPanel", MinTimeLoading = 1f };
+            loading = await canvas.ShowView(loadingModel);
             
             Log.Info($"{GetType().Name} - Start Load");
             if (OnSceneStartLoad != null)
@@ -79,8 +82,8 @@ namespace Assets.Abstractions.RPG.LocalData
             offset += Time.time - timeLoad;
             timeLoad = Time.time;
 
-            if ((loading.ViewModel.MinTimeLoading - offset) > 0)
-                await UniTask.Delay((int)((loading.ViewModel.MinTimeLoading - offset) * 1000));
+            if ((loadingModel.MinTimeLoading - offset) > 0)
+                await UniTask.Delay((int)((loadingModel.MinTimeLoading - offset) * 1000));
             await canvas.CloseView(loading);
         }
     }

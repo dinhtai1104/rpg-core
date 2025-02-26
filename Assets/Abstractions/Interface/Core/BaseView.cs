@@ -1,4 +1,5 @@
 ﻿using Assets.Abstractions.GameScene.Interface;
+using Assets.Abstractions.Interface.Core;
 using Cysharp.Threading.Tasks;
 using System;
 using System.Collections.Generic;
@@ -18,10 +19,15 @@ namespace Assets.Abstractions.GameScene.Core
         private CancellationTokenSource cts;
         private IViewModel viewModal;
         private List<IAnimationTransition> _transitions;
+        private ICanvasManager canvasManager;
         private int order;
+        [SerializeField] private UIBaseButton _buttonClose;
+        public UIBaseButton ButtonClose => _buttonClose;
+
         public CancellationToken CancellationToken => cts.Token;
         public IViewModel ViewModel => viewModal;
         public bool IsVisible { set; get; } = false;
+
 
         public int Order
         {
@@ -39,13 +45,20 @@ namespace Assets.Abstractions.GameScene.Core
         /// <summary>
         /// init when first loading view
         /// </summary>
-        public void Initialize()
+        public void Initialize(ICanvasManager manager)
         {
+            canvasManager = manager;
             canvas = GetComponent<Canvas>();
             graphicRaycast = GetComponent<GraphicRaycaster>();
+            ButtonClose.AddListener(OnClose);
         }
 
-        public UniTask PostInit(IViewModel viewModel)
+        private void OnClose()
+        {
+            this.canvasManager.CloseView(this);
+        }
+
+        public virtual UniTask PostInit(IViewModel viewModel)
         {
             LoadTransitions();
             cts = new();
@@ -88,12 +101,18 @@ namespace Assets.Abstractions.GameScene.Core
         {
         }
 
+        public virtual void OnClosed()
+        {
+
+        }
+
         #region Animation
         private async UniTask ShowAnimation()
         {
             var list = new List<UniTask>();
             foreach (var trans in _transitions)
             {
+                trans.Init();
                 list.Add(trans.Show(CancellationToken));
             }
             await UniTask.WhenAll(list).AttachExternalCancellation(CancellationToken);
@@ -104,7 +123,7 @@ namespace Assets.Abstractions.GameScene.Core
             var list = new List<UniTask>();
             foreach (var trans in _transitions)
             {
-                list.Add(trans.Show(CancellationToken));
+                list.Add(trans.Hide(CancellationToken));
             }
             await UniTask.WhenAll(list).AttachExternalCancellation(CancellationToken);
         }

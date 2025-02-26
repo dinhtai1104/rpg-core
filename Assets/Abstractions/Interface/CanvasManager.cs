@@ -1,10 +1,12 @@
 ﻿using Assets.Abstractions.GameScene.Core;
 using Assets.Abstractions.GameScene.Interface;
+using Assets.Abstractions.Interface.Message;
 using Assets.Abstractions.RPG.GameServices;
 using Assets.Abstractions.Shared.Core;
 using Assets.Abstractions.Shared.Core.DI;
 using Assets.Abstractions.Shared.Core.Manager;
 using Cysharp.Threading.Tasks;
+using Sirenix.OdinInspector;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -74,7 +76,8 @@ namespace Assets.Abstractions.GameScene
                 _injector.Resolve(viewModal);
 
                 var viewInstance = Instantiate(task.GetComponent<BaseView>(), canvas.transform);
-                viewInstance.Initialize();
+                viewInstance.Initialize(this);
+                _injector.Resolve(viewInstance);
                 viewInstance.Order = GetNextOrder();
                 await viewInstance.PostInit(viewModal);
                 await viewInstance.Show();
@@ -157,6 +160,12 @@ namespace Assets.Abstractions.GameScene
 
         public void Dispose()
         {
+        }
+
+        [Button]
+        public void ShowMessage(string text)
+        {
+            ShowView(new MessagePanelModel() { Addressable = "UI/UIMessagePanel", Message = text }).Forget();
         }
     }
 }

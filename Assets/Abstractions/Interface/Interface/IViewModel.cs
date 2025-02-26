@@ -9,6 +9,5 @@ namespace Assets.Abstractions.GameScene.Interface
     public interface IViewModel
     {
         string Addressable { set; get; }
-        float MinTimeLoading { set; get; }
     }
 }

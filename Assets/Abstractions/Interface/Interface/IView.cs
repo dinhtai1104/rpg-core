@@ -14,7 +14,7 @@ namespace Assets.Abstractions.GameScene.Interface
         int Order { get; set; }
         bool IsVisible { get; set; }
         CancellationToken CancellationToken { get; }
-        void Initialize();
+        void Initialize(ICanvasManager manager);
         UniTask PostInit(IViewModel modal);
         UniTask Show();
         UniTask Hide();
