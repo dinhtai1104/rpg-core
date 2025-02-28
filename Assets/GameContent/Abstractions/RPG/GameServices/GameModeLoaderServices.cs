@@ -26,6 +26,7 @@ namespace Assets.Abstractions.RPG.GameServices
 
         private Dictionary<EGameMode, Type> _gameModeLookup;
         private List<Type> _gameModeList;
+        [Inject] private IInjector _injector;
         public UniTask OnInitialize(IArchitecture architecture)
         {
             _gameModeList = new();
@@ -53,6 +54,8 @@ namespace Assets.Abstractions.RPG.GameServices
             // load game mode
             var mode = userGameplayData.GameMode;
             var _gameModeCurrent = (IGameMode)Activator.CreateInstance(_gameModeLookup[mode]);
+            _injector.Resolve(_gameModeCurrent);
+
             _gameModeCurrent.SetData(userGameplayData);
             Log.Info("Game Mode Created! - " + _gameModeCurrent.ToString());
             return _gameModeCurrent;
