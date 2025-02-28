@@ -18,7 +18,7 @@ using UnityEngine;
 
 namespace Assets.Abstractions.RPG.Manager
 {
-    public class Game : Architecture<Game>
+    public class GameManager : Architecture<GameManager>
     {
         public override bool InjectSceneLoadedDependencies => true;
         [SerializeField] private InventoryHandler inventoryHandler;

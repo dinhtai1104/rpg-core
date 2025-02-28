@@ -9,8 +9,5 @@ namespace Abstractions.RPG.Units.Engine.Brain
 {
     public interface IBrainEngine : IEngine
     {
-        CharacterActor Owner { get; }
-        void Init(CharacterActor actor);
-        void OnUpdate();
     }
 }

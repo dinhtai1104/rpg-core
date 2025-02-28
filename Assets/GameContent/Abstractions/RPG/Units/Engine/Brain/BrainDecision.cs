@@ -10,6 +10,6 @@ namespace Abstractions.RPG.Units.Engine.Brain
 {
     public abstract class BrainDecision : ScriptableObject
     {
-        public abstract bool Decide(CharacterActor actor);
+        public abstract bool Decide(ICharacter actor);
     }
 }

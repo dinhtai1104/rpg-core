@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Abstractions.RPG.Units;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -25,6 +26,7 @@ namespace Assets.Abstractions.RPG.Attributes
 
         public bool Locked { set; get; }
 #endif
+        public ICharacter Owner { set; get; }
 
         public AttributeGroup()
         {
@@ -279,7 +281,7 @@ namespace Assets.Abstractions.RPG.Attributes
             return dict;
         }
 
-        public void Initialize()
+        public void Initialize(ICharacter character)
         {
         }
 

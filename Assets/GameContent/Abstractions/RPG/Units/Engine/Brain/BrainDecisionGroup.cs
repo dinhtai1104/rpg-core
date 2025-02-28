@@ -20,7 +20,7 @@ namespace Abstractions.RPG.Units.Engine.Brain
 
         [SerializeField] private DecisionOperator[] m_DecisionOperators;
 
-        public override bool Decide(CharacterActor actor)
+        public override bool Decide(ICharacter actor)
         {
             var result = false;
 

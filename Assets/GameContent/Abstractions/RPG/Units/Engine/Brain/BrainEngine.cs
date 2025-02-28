@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace Abstractions.RPG.Units.Engine.Brain
 {
-    public class BrainEngine : MonoBehaviour, IBrainEngine
+    public class BrainEngine : BaseMonoEngine, IBrainEngine
     {
         [SerializeField] private float m_UpdateInterval = 0.1f;
         [SerializeField] private BrainSO m_Brain;
@@ -32,29 +32,9 @@ namespace Abstractions.RPG.Units.Engine.Brain
             get { return m_Brain.m_LocalTransitions; }
         }
 
-        public CharacterActor Owner { get; set; }
-        public bool Locked { get; set; }
-
-        public bool IsInitialized { get; set; }
-
-
-        public void Execute()
+        protected override void OnUpdate()
         {
-        }
-
-        public void Init(CharacterActor actor)
-        {
-            Owner = actor;
-        }
-
-        public void Initialize()
-        {
-        }
-
-        public void OnUpdate()
-        {
-            if (Locked) return;
-
+            base.OnUpdate();
             m_AiTimer += Time.deltaTime;
             if (!(m_AiTimer >= m_UpdateInterval))
             {

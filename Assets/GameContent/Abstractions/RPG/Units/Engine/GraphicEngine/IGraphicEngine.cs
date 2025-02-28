@@ -9,8 +9,6 @@ namespace Abstractions.RPG.Units.Engine.Graphics
 {
     public interface IGraphicEngine : IEngine
     {
-        CharacterActor Owner { get; }
-        void Init(CharacterActor actor);
         void SetActiveRenderer(bool active);
         void SetGraphicAlpha(float a);
         void SetFlashAmount(float amount);

@@ -6,9 +6,9 @@ namespace Abstractions.RPG.Units.Engine.Fsm
 {
     public abstract class BaseState : MonoBehaviour, IState
     {
-        public UnityEvent<CharacterActor> OnEnterState;
-        public UnityEvent<CharacterActor> OnExitState;
-        public CharacterActor Actor { set; get; }
+        public UnityEvent<ICharacter> OnEnterState;
+        public UnityEvent<ICharacter> OnExitState;
+        public ICharacter Actor { set; get; }
         protected virtual void OnEnable()
         {
         }

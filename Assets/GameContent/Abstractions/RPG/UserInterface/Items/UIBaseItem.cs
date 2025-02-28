@@ -26,7 +26,7 @@ namespace Assets.Abstractions.RPG.UserInterface.Items
         protected override void Awake()
         {
             base.Awake();
-            ResourceManager = Game.Instance.GetService<IResourceServices>();
+            ResourceManager = GameManager.Instance.GetService<IResourceServices>();
         }
 
         public void SetData(BaseRuntimeItem runtimeItem, UISlotItem uiSlot)

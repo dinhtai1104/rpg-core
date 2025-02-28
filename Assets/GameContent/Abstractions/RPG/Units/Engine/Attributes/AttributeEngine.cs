@@ -23,9 +23,9 @@ namespace Assets.Abstractions.RPG.Units.Engine.Attributes
 #if UNITY_EDITOR || DEVELOPMENT || DEVELOPMENT_BUILD
         public Dictionary<string, AttributeData> AttributesDirectDict => _attrDict;
 #endif
-        public override void Initialize()
+        public override void Initialize(ICharacter character)
         {
-            base.Initialize();
+            base.Initialize(character);
             _attrDict = new Dictionary<string, AttributeData>();
         }
         public IAttributeGroup SetMinValue(string name, float min)

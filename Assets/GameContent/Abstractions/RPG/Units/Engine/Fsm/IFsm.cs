@@ -9,8 +9,6 @@ namespace Abstractions.RPG.Units.Engine.Fsm
 {
     public interface IFsm : IEngine
     {
-        CharacterActor Actor { set; get; }
-        void Init(CharacterActor actor);
         void OnUpdate();
         void BackToDefaultState();
         void ChangeToEmptyState();

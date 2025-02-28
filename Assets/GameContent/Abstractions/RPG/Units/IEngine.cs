@@ -8,8 +8,9 @@ namespace Assets.Abstractions.RPG.Units
 {
     public interface IEngine
     {
+        ICharacter Owner { get; set; }
         bool Locked { set; get; }
-        void Initialize();
+        void Initialize(ICharacter character);
         void Execute();
     }
 }

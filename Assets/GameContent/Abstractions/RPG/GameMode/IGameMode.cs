@@ -5,7 +5,7 @@ using Cysharp.Threading.Tasks;
 
 namespace Assets.Abstractions.RPG.GameMode
 {
-    public interface IGameMode : IBelongToArchitecture
+    public interface IGameMode
     {
         EGameMode Mode { get; }
         bool IsEndGame { get; }

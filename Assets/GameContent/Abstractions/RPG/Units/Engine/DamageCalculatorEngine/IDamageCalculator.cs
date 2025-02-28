@@ -11,11 +11,9 @@ namespace Abstractions.RPG.Units.Engine.DamageCalculatorEngine
 {
     public interface IDamageCalculator : IEngine
     {
-        CharacterActor Owner { get; }
-        void Init(CharacterActor actor);
         void SetImmuneDamageType(EDamageType type, bool immune);
         void AddAttackerTemporaryModifier(string modName, AttributeModifier mod);
         void AddDefenderTemporaryModifier(string modName, AttributeModifier mod);
-        HitResult CalculateDamage(CharacterActor defender, CharacterActor attacker, DamageSource source);
+        HitResult CalculateDamage(ICharacter defender, ICharacter attacker, DamageSource source);
     }
 }

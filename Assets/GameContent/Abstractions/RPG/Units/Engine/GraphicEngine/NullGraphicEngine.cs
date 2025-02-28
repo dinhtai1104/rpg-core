@@ -9,13 +9,6 @@ namespace Abstractions.RPG.Units.Engine.Graphics
 {
     public class NullGraphicEngine : BaseNullEngine, IGraphicEngine
     {
-        public CharacterActor Owner { get; private set; }
-
-        public void Init(CharacterActor actor)
-        {
-            Owner = actor;
-        }
-
         public void SetActiveRenderer(bool active)
         {
         }

@@ -36,7 +36,9 @@ namespace Assets.Abstractions.RPG.GameMode
         {
             base.Enter();
             var characterPath = "Unit/" + UserGameplayData.CharacterData.Character;
-            Object.Instantiate(GetAsset<GameObject>(characterPath));
+            var player = Object.Instantiate(GetAsset<GameObject>(characterPath));
+
+            Injector.Resolve(player);
         }
         public override bool EndGameCondition()
         {

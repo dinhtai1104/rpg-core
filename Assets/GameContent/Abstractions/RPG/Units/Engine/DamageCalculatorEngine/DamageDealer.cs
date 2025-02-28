@@ -41,7 +41,7 @@ namespace Abstractions.RPG.Units.Engine.DamageCalculatorEngine
             m_Source.Value = value;
         }
 
-        public HitResult DealDamage(CharacterActor attacker, CharacterActor defender)
+        public HitResult DealDamage(ICharacter attacker, ICharacter defender)
         {
             if (defender.IsDead)
             {

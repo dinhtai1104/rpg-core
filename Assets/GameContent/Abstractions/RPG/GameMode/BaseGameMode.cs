@@ -3,6 +3,7 @@ using Assets.Abstractions.RPG.LocalData.Gameplay;
 using Assets.Abstractions.RPG.Manager;
 using Assets.Abstractions.RPG.Misc;
 using Assets.Abstractions.Shared.Core;
+using Assets.Abstractions.Shared.Core.DI;
 using Assets.Abstractions.Shared.Foundation;
 using Cysharp.Threading.Tasks;
 using System;
@@ -17,11 +18,11 @@ namespace Assets.Abstractions.RPG.GameMode
     {
         private IUserGameplayData userGameplayData;
         public bool IsEndGame { get; private set; }
-        private IResourceServices resourceServices;
         private GamePreloader preLoader;
 
         public abstract EGameMode Mode { get; }
-        protected IResourceServices ResourceServices { get => resourceServices; set => resourceServices = value; }
+        [Inject] public IResourceServices ResourceServices;
+        [Inject] public IInjector Injector;
         protected GamePreloader PreLoader { get => preLoader; set => preLoader = value; }
         protected IUserGameplayData UserGameplayData { get => userGameplayData; set => userGameplayData = value; }
 
@@ -64,18 +65,12 @@ namespace Assets.Abstractions.RPG.GameMode
         public void SetData(IUserGameplayData userGameplayData)
         {
             this.UserGameplayData = userGameplayData;
-            resourceServices = GetArchitecture().GetService<IResourceServices>();
-            preLoader = new GamePreloader(resourceServices);
+            preLoader = new GamePreloader(ResourceServices);
         }
 
         public TAsset GetAsset<TAsset>(string path) where TAsset : UnityEngine.Object
         {
             return preLoader.GetAsset<TAsset>(path);
-        }
-
-        public IArchitecture GetArchitecture()
-        {
-            return Game.Instance;
         }
     }
 }

@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace Abstractions.RPG.Units.Engine.Graphics
 {
-    public class GraphicEngine : MonoBehaviour, IGraphicEngine
+    public class GraphicEngine : BaseMonoEngine, IGraphicEngine
     {
         [SerializeField] private bool m_GraphicAlphaOnStart;
         [SerializeField, Range(0, 1f)] private float m_GraphicAlpha = 1f;
@@ -24,12 +24,6 @@ namespace Abstractions.RPG.Units.Engine.Graphics
         private MaterialPropertyBlock m_PropBlock;
         private Tweener m_FlashColorTween;
 
-        public CharacterActor Owner { get; private set; }
-
-        public bool IsInitialized { get; set; }
-
-        public bool Locked { set; get; }
-
         private void Awake()
         {
             m_Renderers = GetComponentsInChildren<Renderer>();
@@ -43,9 +37,9 @@ namespace Abstractions.RPG.Units.Engine.Graphics
             }
         }
 
-        public void Init(CharacterActor actor)
+        public override void Initialize(ICharacter character)
         {
-            Owner = actor;
+            base.Initialize(character);
             m_PropBlock = new MaterialPropertyBlock();
         }
 

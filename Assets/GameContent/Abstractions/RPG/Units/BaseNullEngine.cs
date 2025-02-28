@@ -11,12 +11,13 @@ namespace Assets.Abstractions.RPG.Units
         public bool IsInitialized => false;
 
         public bool Locked { set; get; }
+        public ICharacter Owner { set; get; }
 
         public void Execute()
         {
         }
 
-        public void Initialize()
+        public void Initialize(ICharacter character)
         {
         }
     }

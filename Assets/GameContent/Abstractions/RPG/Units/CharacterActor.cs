@@ -45,7 +45,7 @@ namespace Assets.Abstractions.RPG.Units
             foreach (var e in enginesComponent)
             {
                 engines.Add(e);
-                e.Initialize();
+                e.Initialize(this);
             }
             SetupNullEngine();
         }
@@ -57,7 +57,7 @@ namespace Assets.Abstractions.RPG.Units
 
             foreach (var e in engines)
             {
-                e.Initialize();
+                e.Initialize(this);
             }
         }
 

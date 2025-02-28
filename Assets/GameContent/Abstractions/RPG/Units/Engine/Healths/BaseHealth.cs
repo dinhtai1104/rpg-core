@@ -41,9 +41,9 @@ namespace Assets.Abstractions.RPG.Units.Engine.Healths
         public abstract void Reset();
 
 
-        public override void Initialize()
+        public override void Initialize(ICharacter character)
         {
-            base.Initialize();
+            base.Initialize(character);
             var damageTypes = (EDamageType[])Enum.GetValues(typeof(EDamageType));
             _shieldDict = new Dictionary<EDamageType, float>(damageTypes.Length);
             _onRecieveDamage = new List<Action<float, EDamageType>>();

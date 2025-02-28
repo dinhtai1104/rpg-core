@@ -12,7 +12,7 @@ using UnityEngine;
 
 namespace Abstractions.RPG.Units.Engine.Movement
 {
-    public class SimpleMovementEngine : MonoBehaviour, IMovementEngine
+    public class SimpleMovementEngine : BaseMonoEngine, IMovementEngine
     {
         private System.Random m_random;
 
@@ -46,7 +46,7 @@ namespace Abstractions.RPG.Units.Engine.Movement
             get { return _speed; }
         }
 
-        public bool Locked
+        public override bool Locked
         {
             set { _lockMovement = value; }
             get { return _lockMovement; }
@@ -101,12 +101,12 @@ namespace Abstractions.RPG.Units.Engine.Movement
 
         public bool ReachBound => ReachBoundBottom || ReachBoundLeft || ReachBoundRight || ReachBoundTop;
 
-        public bool IsInitialized { get; private set; }
 
-        public void Init(CharacterActor actor)
+        public override void Initialize(ICharacter character)
         {
+            base.Initialize(character);
             _trans = transform;
-            _graphicTrans = actor.GraphicTrans;
+            _graphicTrans = character.GraphicTrans;
             SyncGraphicRotation(Vector3.right);
 
             m_random = new System.Random();
@@ -271,14 +271,6 @@ namespace Abstractions.RPG.Units.Engine.Movement
         public void MoveTween(Vector3 dest, float duration)
         {
             CachedTransform.DOMove(dest, duration).OnUpdate(() => { Bound(); });
-        }
-
-        public void Initialize()
-        {
-        }
-
-        public void Execute()
-        {
         }
     }
 }

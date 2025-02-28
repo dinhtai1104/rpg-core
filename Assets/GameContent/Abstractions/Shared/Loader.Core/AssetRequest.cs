@@ -22,6 +22,8 @@ namespace Assets.Abstractions.Shared.Loader.Core
 		{
 			RequestId = requestId;
 		}
+
+		public abstract Object GetAsset();
 	}
 
 	public sealed class AssetRequest<TAsset> : AssetRequest, IAssetRequest<TAsset> where TAsset : Object
@@ -55,5 +57,10 @@ namespace Assets.Abstractions.Shared.Loader.Core
 		{
 			OperationException = ex;
 		}
-	}
+
+        public override Object GetAsset()
+        {
+			return Result;
+        }
+    }
 }

@@ -9,15 +9,23 @@ namespace Assets.Abstractions.RPG.Units
 {
     public class BaseMonoEngine : MonoBehaviour, IEngine
     {
+        public ICharacter Owner { get; set; }
         public bool IsInitialized { private set; get; }
 
-        public bool Locked { set; get; }
+        public virtual bool Locked { set; get; }
 
         public virtual void Execute()
         {
+            if (Locked) return;
+            OnUpdate();
         }
 
-        public virtual void Initialize()
+        protected virtual void OnUpdate()
+        {
+
+        }
+
+        public virtual void Initialize(ICharacter character)
         {
             IsInitialized = true;
         }

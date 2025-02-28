@@ -13,6 +13,6 @@ namespace Abstractions.RPG.Units.Engine.DamageCalculatorEngine
     {
         void Init(IAttributeGroup stat);
         void Release(IAttributeGroup stat);
-        HitResult DealDamage(CharacterActor attacker, CharacterActor defender);
+        HitResult DealDamage(ICharacter attacker, ICharacter defender);
     }
 }

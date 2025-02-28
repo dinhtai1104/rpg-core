@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace Abstractions.RPG.Units.Engine.DamageCalculatorEngine
 {
-    public class DamageCalculator : MonoBehaviour, IDamageCalculator
+    public class DamageCalculator : BaseMonoEngine, IDamageCalculator
     {
         private readonly Dictionary<EDamageType, bool> m_ImmuneDict = new Dictionary<EDamageType, bool>();
         private readonly DamageDealer m_ReflectDamageDealer = new DamageDealer();
@@ -19,16 +19,6 @@ namespace Abstractions.RPG.Units.Engine.DamageCalculatorEngine
         private readonly TemporaryModifier m_AttackerTempMods = new TemporaryModifier();
         private readonly TemporaryModifier m_DefenderTempMods = new TemporaryModifier();
 
-        public CharacterActor Owner { get; private set; }
-
-        public bool IsInitialized { get; set; }
-
-        public bool Locked { get; set; }
-
-        public void Init(CharacterActor actor)
-        {
-            Owner = actor;
-        }
 
         public void SetImmuneDamageType(EDamageType type, bool immune)
         {
@@ -47,7 +37,7 @@ namespace Abstractions.RPG.Units.Engine.DamageCalculatorEngine
             return false;
         }
 
-        public HitResult CalculateDamage(CharacterActor defender, CharacterActor attacker, DamageSource source)
+        public HitResult CalculateDamage(ICharacter defender, ICharacter attacker, DamageSource source)
         {
             if (defender.GetEngine<IHealth>().Invincible)
             {
@@ -85,12 +75,12 @@ namespace Abstractions.RPG.Units.Engine.DamageCalculatorEngine
             return new();
         }
 
-        private float CalculateRawDamage(DamageSource source, CharacterActor defender)
+        private float CalculateRawDamage(DamageSource source, ICharacter defender)
         {
             return source.Value + defender.GetEngine<IHealth>().MaxHealth * source.DamageHealthPercentage;
         }
 
-        private float CalculatePhysicalDamage(CharacterActor defender, CharacterActor attacker, DamageSource source, out bool success,
+        private float CalculatePhysicalDamage(ICharacter defender, ICharacter attacker, DamageSource source, out bool success,
             out bool crit, out bool hurt,
             out bool evade, out bool block)
         {
@@ -103,7 +93,7 @@ namespace Abstractions.RPG.Units.Engine.DamageCalculatorEngine
             return 0;
         }
 
-        private float CalculateMagicDamage(CharacterActor defender, CharacterActor attacker, DamageSource source)
+        private float CalculateMagicDamage(ICharacter defender, ICharacter attacker, DamageSource source)
         {
             return 0;
         }
@@ -118,13 +108,6 @@ namespace Abstractions.RPG.Units.Engine.DamageCalculatorEngine
             m_DefenderTempMods.AddModifier(modName, mod);
         }
 
-        public void Initialize()
-        {
-        }
-
-        public void Execute()
-        {
-        }
 
         #region Private classes
 

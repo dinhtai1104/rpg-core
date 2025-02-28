@@ -30,8 +30,6 @@ namespace Abstractions.RPG.Units.Engine.Movement
         Vector3 CurrentDirection { get; }
         Vector3 CurrentPosition { get; }
 
-        void Init(CharacterActor actor);
-
         void SetBound(Bound2D bound);
 
         void Teleport(Vector3 pos);
