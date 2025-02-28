@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 6363119316789421775}
   - component: {fileID: 4860505845415309687}
   - component: {fileID: 2992939495132759626}
+  - component: {fileID: 5281745056169350348}
+  - component: {fileID: 6378928535129006939}
   m_Layer: 5
   m_Name: UILoadingPanel
   m_TagString: Untagged
@@ -115,6 +117,31 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _buttonClose: {fileID: 0}
+--- !u!225 &5281745056169350348
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 688140040416787861}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &6378928535129006939
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 688140040416787861}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58a54d954b4a3ae43ba0a663cba8380d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _settings: {fileID: 11400000, guid: 336e27b42ac34694fae3567b1cefcb1c, type: 2}
 --- !u!1 &4082419481278655505
 GameObject:
   m_ObjectHideFlags: 0

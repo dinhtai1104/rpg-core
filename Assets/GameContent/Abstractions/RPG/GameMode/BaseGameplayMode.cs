@@ -1,6 +1,7 @@
 ﻿using Assets.Abstractions.RPG.LocalData.Gameplay;
 using Assets.Abstractions.RPG.Units;
 using Assets.Abstractions.RPG.Units.Engine.Healths;
+using Assets.Abstractions.Shared.Foundation;
 using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
 using UnityEngine;
@@ -37,7 +38,6 @@ namespace Assets.Abstractions.RPG.GameMode
             base.Enter();
             var characterPath = "Unit/" + UserGameplayData.CharacterData.Character;
             var player = Object.Instantiate(GetAsset<GameObject>(characterPath));
-
             Injector.Resolve(player);
         }
         public override bool EndGameCondition()
