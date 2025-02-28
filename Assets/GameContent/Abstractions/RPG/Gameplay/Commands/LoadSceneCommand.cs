@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using Assets.Abstractions.RPG.LocalData.Models;
 using Assets.Abstractions.Shared.Core;
 using Assets.Abstractions.Shared.Core.DI;
+using Abstractions.Shared;
 
 namespace Assets.Abstractions.RPG.Gameplay.Commands
 {
@@ -38,6 +39,7 @@ namespace Assets.Abstractions.RPG.Gameplay.Commands
     public class LoadSceneCommandHandler : ICommandHandler<LoadSceneCommand>
     {
         [Inject] private IArchitecture _architecture;
+        [Inject] private IGameSceneLoaderServices _gameSceneLoader;
 
         public async UniTask Execute(LoadSceneCommand command, CancellationToken cancellationToken = default)
         {
@@ -46,10 +48,11 @@ namespace Assets.Abstractions.RPG.Gameplay.Commands
             _architecture.Injector.Resolve(command);
             sceneLoader.OnSceneLoaded += (data) =>
             {
-               return _architecture.GetService<IGameSceneLoaderServices>().ActiveScene(data.Key);
+                PoolFactory.DespawnAll();
+                return _gameSceneLoader.ActiveScene(data.Key);
             };
 
-            await _architecture.GetService<IGameSceneLoaderServices>().LoadScene(sceneLoader);
+            await _gameSceneLoader.LoadScene(sceneLoader);
         }
     }
 }

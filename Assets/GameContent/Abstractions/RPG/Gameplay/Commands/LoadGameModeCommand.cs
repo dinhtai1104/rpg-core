@@ -35,6 +35,7 @@ namespace Assets.Abstractions.RPG.Gameplay.Commands
     public class LoadGameModeCommandHandler : ICommandHandler<LoadGameModeCommand, IGameMode>
     {
         [Inject] private IArchitecture _architecture;
+        [Inject] private IGameModeLoaderServices _gameModeLoader;
 
         public async UniTask<IGameMode> Execute(LoadGameModeCommand command, CancellationToken cancellationToken = default)
         {
@@ -58,8 +59,7 @@ namespace Assets.Abstractions.RPG.Gameplay.Commands
                 {
                     userGameplayData = new CampaignUserGameplayData(modeGame, null, 1);
                 }
-                var gameModeServices = _architecture.GetService<IGameModeLoaderServices>();
-                var gameModeLoader = await gameModeServices.LoadGameMode(userGameplayData);
+                var gameModeLoader = await _gameModeLoader.LoadGameMode(userGameplayData);
                 await gameModeLoader.PreloadGame();
 
                 return gameModeLoader;

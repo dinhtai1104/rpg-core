@@ -8,7 +8,6 @@ namespace Assets.Abstractions.RPG.Units
 {
     public interface IEngine
     {
-        bool IsInitialized { get; }
         bool Locked { set; get; }
         void Initialize();
         void Execute();

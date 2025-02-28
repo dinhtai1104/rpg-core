@@ -10,16 +10,32 @@ namespace Assets.Abstractions.RPG.Units
     {
         public bool IsInitialized { private set; get; }
         public bool IsActivated { private set; get; }
+        public bool IsDead { set; get; }
+        public bool AI { set; get; }
 
         private List<IEngine> engines = new();
         private Dictionary<Type, IEngine> enginesLookup = new();
         private Dictionary<Type, IEngine> nullEngineLookup = new();
+        private Transform _transform;
+        [SerializeField] private Transform _graphicsTrans;
+
+        public Transform GraphicTrans
+        {
+            get => _graphicsTrans;
+        }
+        
+        public Transform Transform
+        {
+            get => _transform;
+        }
 
         [Button]
         public void Initialize()
         {
+            _transform = transform;
             IsInitialized = true;
             IsActivated = false;
+            IsDead = false;
 
             enginesLookup.Clear();
             nullEngineLookup.Clear();
@@ -37,7 +53,14 @@ namespace Assets.Abstractions.RPG.Units
         public void ActiveActor()
         {
             IsActivated = true;
+            IsDead = false;
+
+            foreach (var e in engines)
+            {
+                e.Initialize();
+            }
         }
+
         public void Execute()
         {
             foreach (var e in engines)

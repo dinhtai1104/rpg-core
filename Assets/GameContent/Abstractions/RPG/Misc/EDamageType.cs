@@ -8,5 +8,10 @@ namespace Assets.Abstractions.RPG.Misc
 {
     public enum EDamageType
     {
+        Physical = 0,
+        Lightning,
+        Fire,
+        Explosion,
+        Elemental,
     }
 }
