@@ -11,6 +11,7 @@ using Assets.Abstractions.RPG.Misc;
 using Assets.Abstractions.RPG.Units;
 using Assets.Abstractions.Shared.Commands;
 using Assets.Abstractions.Shared.Core;
+using Assets.Abstractions.Shared.Core.DI;
 using Cysharp.Threading.Tasks;
 using Sirenix.OdinInspector;
 using System;

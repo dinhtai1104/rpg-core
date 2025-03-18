@@ -2,7 +2,9 @@
 using Abstractions.Shared.Events;
 using Assets.Abstractions.RPG.Units;
 using Assets.Abstractions.Shared.Core.DI;
+using Assets.Abstractions.Shared.UnRegister;
 using Assets.Game.Scripts.Events;
+using Cysharp.Threading.Tasks;
 using Events;
 using System;
 using System.Collections.Generic;
@@ -27,8 +29,9 @@ namespace Abstractions.RPG.Units.Engine.Inputs
             JoystickDirection = Vector2.zero;
         }
 
-        private void OnEnable()
+        private async void OnEnable()
         {
+            await UniTask.Delay(200).UnRegister(this);
             _eventService.Subscribe<JoystickMovementStartEventArgs>(OnJoystickMovementStart);
             _eventService.Subscribe<JoystickMovementEventArgs>(OnJoystickMovement);
             _eventService.Subscribe<JoystickMovementEndEventArgs>(OnJoystickMovementEnd);
