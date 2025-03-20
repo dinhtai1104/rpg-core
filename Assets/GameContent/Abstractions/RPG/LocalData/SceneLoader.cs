@@ -76,9 +76,9 @@ namespace Assets.Abstractions.RPG.LocalData
         public async UniTask ActiveScene()
         {
             Log.Info($"{GetType().Name} - Active Scene - {Key}");
+            task.allowSceneActivation = true;
             if (OnSceneActive != null)
                 await OnSceneActive(this);
-            task.allowSceneActivation = true;
             offset += Time.time - timeLoad;
             timeLoad = Time.time;
 

@@ -28,10 +28,14 @@ namespace Assets.Abstractions.RPG.Gameplay.Commands
             set => sceneName = value;
         }
 
+        public SceneLoader Loader;
+
         public static LoadSceneCommand Create(string sceneName) 
         {
+            var sceneLoader = new SceneLoader(sceneName);
             return new LoadSceneCommand
             {
+                Loader = sceneLoader,
                 SceneName = sceneName,
             };
         }
@@ -43,7 +47,7 @@ namespace Assets.Abstractions.RPG.Gameplay.Commands
 
         public async UniTask Execute(LoadSceneCommand command, CancellationToken cancellationToken = default)
         {
-            var sceneLoader = new SceneLoader(command.SceneName);
+            var sceneLoader = command.Loader;
             _architecture.Injector.Resolve(sceneLoader);
             _architecture.Injector.Resolve(command);
             sceneLoader.OnSceneLoaded += (data) =>

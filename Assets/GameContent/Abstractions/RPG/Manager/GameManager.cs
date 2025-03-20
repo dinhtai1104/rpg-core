@@ -15,6 +15,7 @@ using Assets.Abstractions.Shared.Core.DI;
 using Cysharp.Threading.Tasks;
 using Sirenix.OdinInspector;
 using System;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Assets.Abstractions.RPG.Manager
@@ -67,10 +68,18 @@ namespace Assets.Abstractions.RPG.Manager
         [Button]
         public async void TestLoadScene(string sceneName, EGameMode modeGame)
         {
-            await GetService<ICommandBusService>().Execute(LoadSceneCommand.Create(sceneName));
+            var loadScene = LoadSceneCommand.Create(sceneName);
+            loadScene.Loader.OnSceneActive += t => LoadGameMode(modeGame);
+
+            await GetService<ICommandBusService>().Execute(loadScene);
+        }
+
+        private async UniTask LoadGameMode(EGameMode modeGame)
+        {
             var gameMode = await GetService<ICommandBusService>().Execute<LoadGameModeCommand, IGameMode>(LoadGameModeCommand.Create(modeGame));
             gameMode.Enter();
         }
+
         [Button]
         public async void TestLoadScene(string sceneName)
         {

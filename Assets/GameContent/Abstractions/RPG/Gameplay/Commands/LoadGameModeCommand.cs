@@ -64,7 +64,7 @@ namespace Assets.Abstractions.RPG.Gameplay.Commands
 
                 return gameModeLoader;
             }
-            return null;
+            return null; 
         }
     }
 }
